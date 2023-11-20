@@ -1,6 +1,7 @@
 ﻿import fs from "fs"; //  https://nodejs.org/docs/latest-v14.x/api/fs.html
 import http from "http"; //  https://nodejs.org/docs/latest-v14.x/api/http.html
 import url from "url"; //  https://nodejs.org/docs/latest-v14.x/api/url.html
+import Megoldás from "./Megoldás";
 
 export default function content(req: http.IncomingMessage, res: http.ServerResponse): void {
     // favicon.ico kérés kiszolgálása:
@@ -25,19 +26,24 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
 
     // Kezd a kódolást innen -->
 
-    res.write("Egyszerű Hello World! (2023/2024)\n");
+    const m: Megoldás = new Megoldás("szavazatok.txt");
+
+    res.write(`2. feladat:\nA helyhatósági választáson ${m.képviselőjelöltekSzáma} képviselőjelölt indult.\n`);
+
+    // res.write("Egyszerű Hello World! (2023/2024)\n");
 
     // Tetszőleges html teg-ek és attribútumok beépítése:
-    res.write("<span style='color: blue;'><i>Színes és dőlt Hello World!'</i></span>\n");
+    //res.write("<span style='color: blue;'><i>Színes és dőlt Hello World!'</i></span>\n");
 
     // Próbáljuk számra konvertálni a "kor" paraméter (http://localhost:8080/?kor=16) értékét:
-    let korod = parseInt(params.get("kor") as string);
+    let név: string = params.get("nev") as string;
     // Ha nincs "kor" paraméter megadva, vagy nem lehet számra konvertálni értékét,
     // akkor a "korod" változóba NaN érték kerül, ilyenkor legyen 18 év az értéke:
-    if (isNaN(korod)) korod = 18;
+    if (!név) név = "Fasirt Ferenc";
 
-    res.write(`<label>Kérem a korod: <input type='number' name='kor' value=${korod} style='max-width:100px;' onChange='this.form.submit();'></label>\n`);
-    res.write(`Te ${korod} éves vagy!\n`);
+    res.write("3. feladat:\n");
+    res.write(`<label>Adja meg a képviselő nevét! <input type='text' name='nev' value='${név}' style='max-width:100px;' onChange='this.form.submit();'></label>\n`);
+    res.write(`Te ${név} vagy!\n`);
 
     // <---- Fejezd be a kódolást
 
