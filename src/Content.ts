@@ -41,9 +41,12 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
     // akkor a "korod" változóba NaN érték kerül, ilyenkor legyen 18 év az értéke:
     if (!név) név = "Fasirt Ferenc";
 
-    res.write("3. feladat:\n");
+    res.write("\n3. feladat:\n");
     res.write(`<label>Adja meg a képviselő nevét! <input type='text' name='nev' value='${név}' style='max-width:100px;' onChange='this.form.submit();'></label>\n`);
-    res.write(`Te ${név} vagy!\n`);
+    res.write(m.szavazatokSzáma(név) + "\n");
+
+    res.write("\n4. feladat:\n");
+    res.write(m.részvételiStatisztika);
 
     // <---- Fejezd be a kódolást
 
