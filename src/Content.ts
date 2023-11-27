@@ -48,6 +48,12 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
     res.write("\n4. feladat:\n");
     res.write(m.részvételiStatisztika);
 
+    res.write("\n5. feladat:\n");
+    res.write(m.pártStat);
+
+    res.write("\n6. feladat:\n");
+    res.write(m.legtöbbSzavazat);
+
     // <---- Fejezd be a kódolást
 
     res.write("</pre></form></body></html>");

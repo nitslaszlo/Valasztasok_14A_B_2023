@@ -22,7 +22,7 @@ export default class Megoldás {
     }
 
     get részvételiStatisztika(): string {
-        return `A választáson ${this.#megjelentekSzáma} állampolgár, a jogosultak ${this.#megjelentekAránya}-a vett részt.`;
+        return `A választáson ${this.#megjelentekSzáma} állampolgár, a jogosultak ${this.#megjelentekAránya}-a vett részt.\n`;
     }
 
     get #pártStat(): Map<string, number> {
@@ -39,6 +39,43 @@ export default class Megoldás {
             }
         });
         return stat;
+    }
+
+    get pártStat(): string {
+        let vissza: string = "";
+        // map bejárása a forEach() metódussal:
+        this.#pártStat.forEach((value, key) => {
+            vissza += `${key}= ${((value / this.#megjelentekSzáma) * 100).toFixed(2)} %\n`;
+        });
+        // vagy for-of ciklussal
+        // for (const [key, value] of this.#pártStat) {
+        //     vissza += `${key}= ${((value / this.#megjelentekSzáma) * 100).toFixed(2)} %\n`;
+        // }
+        return vissza;
+    }
+
+    get #legtöbbSzavazat(): number {
+        let max = -1;
+        this.#ve.forEach(e => {
+            if (e.szavazatok > max) {
+                max = e.szavazatok;
+            }
+        });
+        return max;
+    }
+
+    get #legtöbbSzavazat2(): number {
+        return Math.max(...this.#ve.map(x => x.szavazatok));
+    }
+
+    get legtöbbSzavazat(): string {
+        let vissza: string = "";
+        for (const e of this.#ve) {
+            if (e.szavazatok == this.#legtöbbSzavazat2) {
+                vissza += `${e.nev} ${e.pártJel2}\n`;
+            }
+        }
+        return vissza;
     }
 
     constructor(fájl_neve: string) {
