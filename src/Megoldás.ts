@@ -78,6 +78,17 @@ export default class Megoldás {
         return vissza;
     }
 
+    get #állománytÖsszeállít(): string {
+        const ki: string[] = [];
+        for (let kerület = 1; kerület <= 8; kerület++) {
+            const ve: VálasztásiEredmény | null = this.#nyertesKépviselő(kerület);
+            if (ve != null) {
+                ki.push(`${kerület}. ${ve.nev} ${ve.pártJel2}`);
+            }
+        }
+        return ki.join("\r\n") + "\r\n";
+    }
+
     constructor(fájl_neve: string) {
         fs.readFileSync(fájl_neve)
             .toString()
@@ -95,5 +106,42 @@ export default class Megoldás {
             }
         }
         return "Ilyen nevű képviselőjelölt nem szerepel a nyilvántartásban.";
+    }
+
+    #nyertesKépviselő(kerület: number): VálasztásiEredmény | null {
+        let nyertes: VálasztásiEredmény | null = null; // null értékű ha a keresett kerületben nem indult senki
+        for (const e of this.#ve) {
+            if (e.kerület == kerület) {
+                if (nyertes == null) {
+                    nyertes = e;
+                } else {
+                    if (e.szavazatok > nyertes.szavazatok) {
+                        nyertes = e;
+                    }
+                }
+            }
+        }
+        return nyertes;
+    }
+
+    állománybaÍr(állományNeve: string): void {
+        try {
+            fs.writeFileSync(állományNeve, this.#állománytÖsszeállít);
+        } catch (error) {
+            // console.log((error as Error).message);
+            throw Error((error as Error).message);
+        }
+    }
+
+    állománytOlvas(állományNeve: string): string {
+        let vissza: string = "";
+        fs.readFileSync(állományNeve)
+            .toString()
+            .split("\n")
+            .forEach(sor => {
+                const aktSor: string = sor.trim();
+                if (aktSor.length > 0) vissza += `${aktSor}\n`;
+            });
+        return vissza;
     }
 }
