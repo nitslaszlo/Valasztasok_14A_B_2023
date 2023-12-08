@@ -83,7 +83,7 @@ export default class Megoldás {
         for (let kerület = 1; kerület <= 8; kerület++) {
             const ve: VálasztásiEredmény | null = this.#nyertesKépviselő(kerület);
             if (ve != null) {
-                ki.push(`${kerület}. ${ve.nev} ${ve.pártJel2}`);
+                ki.push(`${kerület}.kerület: ${ve.nev} ${ve.pártJel2}`);
             }
         }
         return ki.join("\r\n") + "\r\n";
