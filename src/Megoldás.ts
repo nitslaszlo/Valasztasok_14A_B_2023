@@ -134,14 +134,11 @@ export default class Megoldás {
     }
 
     állománytOlvas(állományNeve: string): string {
-        let vissza: string = "";
-        fs.readFileSync(állományNeve)
-            .toString()
-            .split("\n")
-            .forEach(sor => {
-                const aktSor: string = sor.trim();
-                if (aktSor.length > 0) vissza += `${aktSor}\n`;
-            });
-        return vissza;
+        try {
+            return fs.readFileSync(állományNeve).toString();
+        } catch (error) {
+            // console.log((error as Error).message);
+            throw Error((error as Error).message);
+        }
     }
 }
